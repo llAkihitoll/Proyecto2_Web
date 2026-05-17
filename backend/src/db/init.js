@@ -1,7 +1,6 @@
 const Database = require('better-sqlite3')
 const path = require('path')
 
-// la base de datos se guarda en la raíz del backend
 const db = new Database(path.join(__dirname, '../../anime_tracker.sqlite'))
 
 db.exec(`
