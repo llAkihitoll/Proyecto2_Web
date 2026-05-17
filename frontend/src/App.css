@@ -1,5 +1,216 @@
 .app {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 24px 16px;
 }
+
+/* header */
+.app-header {
+  margin-bottom: 28px;
+}
+.app-header h1 {
+  font-size: 2rem;
+  color: #1a1a2e;
+}
+.app-subtitle {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* formulario */
+.formulario {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.formulario h2 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+  color: #1a1a2e;
+}
+.formulario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.campo-full {
+  margin-bottom: 12px;
+}
+.campo label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #495057;
+}
+.campo input,
+.campo select,
+.campo textarea {
+  padding: 7px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #fff;
+}
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+  outline: none;
+  border-color: #6c63ff;
+}
+.campo textarea {
+  resize: vertical;
+}
+.formulario-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+/* filtros */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.filtro-btn {
+  padding: 5px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.85rem;
+  color: #495057;
+  transition: all 0.15s;
+}
+.filtro-btn:hover {
+  border-color: #6c63ff;
+  color: #6c63ff;
+}
+.filtro-btn.activo {
+  background: #6c63ff;
+  color: #fff;
+  border-color: #6c63ff;
+}
+
+/* lista */
+.lista-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.lista-vacia {
+  color: #6c757d;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* tarjeta */
+.item-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 4px solid #dee2e6;
+}
+.item-card.estado-completado  { border-left-color: #28a745; }
+.item-card.estado-en-progreso { border-left-color: #fd7e14; }
+.item-card.estado-pendiente   { border-left-color: #6c63ff; }
+.item-card.estado-abandonado  { border-left-color: #dc3545; }
+
+.item-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.item-card-header h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: #1a1a2e;
+}
+.item-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag {
+  background: #f1f3f5;
+  color: #495057;
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+.episodios,
+.puntuacion,
+.notas {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #495057;
+}
+.notas {
+  font-style: italic;
+  color: #6c757d;
+}
+.item-card-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* badges */
+.badge {
+  font-size: 0.72rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.badge-completado  { background: #d4edda; color: #155724; }
+.badge-en-progreso { background: #ffe8d1; color: #7c3a00; }
+.badge-pendiente   { background: #e8e6ff; color: #3a2f8f; }
+.badge-abandonado  { background: #f8d7da; color: #721c24; }
+
+/* botones */
+.btn-primary {
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: #574fd6; }
+
+.btn-secondary {
+  background: #fff;
+  color: #495057;
+  border: 1px solid #ced4da;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: border-color 0.15s;
+}
+.btn-secondary:hover { border-color: #6c63ff; color: #6c63ff; }
+
+.btn-danger {
+  background: #fff;
+  color: #dc3545;
+  border: 1px solid #f5c6cb;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+.btn-danger:hover { background: #f8d7da; }
