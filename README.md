@@ -5,7 +5,7 @@ Aplicación fullstack para registrar y hacer seguimiento de anime y series. Desa
 ## Tecnologías
 
 - **Frontend:** React, Vite, LocalStorage
-- **Backend:** Node.js, Express, SQLite (better-sqlite3)
+- **Backend:** Node.js, Express, SQLite (node:sqlite)
 
 ## Estructura del proyecto
 
@@ -33,9 +33,7 @@ npm run dev
 
 ## Mis primeros Items
 
-> Captura de pantalla con mis primeros 3 anime registrados en la app.
-
-*(Agregar captura aquí antes de la entrega)*
+![Mis primeros items](docs/screenshot.png)
 
 | Nombre | Categoría | Estado | Puntuación |
 |--------|-----------|--------|------------|
