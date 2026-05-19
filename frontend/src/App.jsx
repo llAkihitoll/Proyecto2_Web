@@ -1,56 +1,65 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import FormularioItem from './components/FormularioItem'
 import ListaItems from './components/ListaItems'
-import { createItem } from './utils/itemUtils'
+import { useStorage } from './context/StorageContext'
+import { useTheme } from './context/ThemeContext'
 import './App.css'
 
 function App() {
-  const [items, setItems] = useState(
-    () => JSON.parse(localStorage.getItem('anime_items') || '[]')
-  )
+  const { modo, setModo, obtenerItems, guardarItem, eliminarItem } = useStorage()
+  const { tema, toggleTema } = useTheme()
+
+  const [items, setItems] = useState([])
   const [itemEditar, setItemEditar] = useState(null)
   const [filtroEstado, setFiltroEstado] = useState('todos')
 
-  // sincroniza items con localStorage cada vez que cambian
-  useEffect(() => {
-    localStorage.setItem('anime_items', JSON.stringify(items))
-  }, [items])
+  // useRef — referencia al input de nombre para focus automático
+  const inputRef = useRef(null)
 
-  function handleAgregar(formData) {
-    const nuevoItem = createItem(formData)
-    setItems(prev => [nuevoItem, ...prev])
+  useEffect(() => {
+    cargarItems()
+  }, [modo])
+
+  // atajos de teclado con cleanup obligatorio
+  useEffect(() => {
+    const handler = (e) => {
+      // Ctrl+N — enfocar el input de nombre
+      if (e.ctrlKey && e.key === 'n') {
+        e.preventDefault()
+        inputRef.current?.focus()
+      }
+      // T — cambiar tema (solo si no está escribiendo en un input)
+      if (e.key === 't' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        toggleTema()
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [toggleTema])
+
+  async function cargarItems() {
+    const data = await obtenerItems()
+    setItems(data)
   }
 
-  function handleActualizar(id, formData) {
-    setItems(prev => prev.map(item => {
-      if (item.id !== id) return item
-      return {
-        ...item,
-        nombre: formData.nombre,
-        categoriaId: formData.categoriaId,
-        estado: formData.estado,
-        puntuacion: formData.puntuacion !== '' ? Number(formData.puntuacion) : null,
-        notas: formData.notas,
-        fechaActividad: new Date().toISOString(),
-        atributos: {
-          estudio: formData.estudio,
-          episodios_totales: formData.episodios_totales ? Number(formData.episodios_totales) : null,
-          episodios_vistos: formData.episodios_vistos ? Number(formData.episodios_vistos) : 0,
-          plataforma: formData.plataforma,
-        },
-      }
-    }))
+  async function handleAgregar(formData) {
+    await guardarItem(formData)
+    await cargarItems()
+    inputRef.current?.focus()
+  }
+
+  async function handleActualizar(id, formData) {
+    await guardarItem({ id, ...formData })
+    await cargarItems()
     setItemEditar(null)
   }
 
-  function handleArchivar(id) {
-    setItems(prev => prev.map(item =>
-      item.id === id ? { ...item, activo: false } : item
-    ))
+  async function handleArchivar(id) {
+    await eliminarItem(id)
+    await cargarItems()
   }
 
   const itemsVisibles = items.filter(item => {
-    if (!item.activo) return false
     if (filtroEstado === 'todos') return true
     return item.estado === filtroEstado
   })
@@ -58,11 +67,29 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Anime Tracker</h1>
-        <p className="app-subtitle">{items.filter(i => i.activo).length} anime registrados</p>
+        <div className="app-header-top">
+          <div>
+            <h1>Anime Tracker</h1>
+            <p className="app-subtitle">{items.length} anime registrados</p>
+          </div>
+          <div className="app-controles">
+            <button className="btn-tema" onClick={toggleTema}>
+              {tema === 'claro' ? 'Modo oscuro' : 'Modo claro'}
+            </button>
+            <select
+              className="select-modo"
+              value={modo}
+              onChange={e => setModo(e.target.value)}
+            >
+              <option value="local">Local</option>
+              <option value="api">API</option>
+            </select>
+          </div>
+        </div>
       </header>
 
       <FormularioItem
+        inputRef={inputRef}
         onAgregar={handleAgregar}
         itemEditar={itemEditar}
         onActualizar={handleActualizar}
