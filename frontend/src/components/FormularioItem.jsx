@@ -1,20 +1,11 @@
 import { useState } from 'react'
-
-const CATEGORIAS = [
-  { id: 'accion', label: 'Acción' },
-  { id: 'aventura', label: 'Aventura' },
-  { id: 'romance', label: 'Romance' },
-  { id: 'isekai', label: 'Isekai' },
-  { id: 'terror', label: 'Terror' },
-  { id: 'comedia', label: 'Comedia' },
-  { id: 'drama', label: 'Drama' },
-]
+import { CATEGORIAS } from '../utils/categorias'
 
 const ESTADOS = [
-  { id: 'pendiente', label: 'Pendiente' },
+  { id: 'pendiente',   label: 'Pendiente' },
   { id: 'en-progreso', label: 'En progreso' },
-  { id: 'completado', label: 'Completado' },
-  { id: 'abandonado', label: 'Abandonado' },
+  { id: 'completado',  label: 'Completado' },
+  { id: 'abandonado',  label: 'Abandonado' },
 ]
 
 const FORM_INICIAL = {
@@ -29,17 +20,17 @@ const FORM_INICIAL = {
   plataforma: '',
 }
 
-function FormularioItem({ onAgregar, itemEditar, onActualizar, onCancelar }) {
+function FormularioItem({ inputRef, onAgregar, itemEditar, onActualizar, onCancelar }) {
   const [form, setForm] = useState(itemEditar ? {
     nombre: itemEditar.nombre,
     categoriaId: itemEditar.categoriaId,
     estado: itemEditar.estado,
     puntuacion: itemEditar.puntuacion ?? '',
     notas: itemEditar.notas,
-    estudio: itemEditar.atributos.estudio,
-    episodios_totales: itemEditar.atributos.episodios_totales ?? '',
-    episodios_vistos: itemEditar.atributos.episodios_vistos ?? '',
-    plataforma: itemEditar.atributos.plataforma,
+    estudio: itemEditar.atributos?.estudio || '',
+    episodios_totales: itemEditar.atributos?.episodios_totales ?? '',
+    episodios_vistos: itemEditar.atributos?.episodios_vistos ?? '',
+    plataforma: itemEditar.atributos?.plataforma || '',
   } : FORM_INICIAL)
 
   function handleChange(e) {
@@ -67,6 +58,7 @@ function FormularioItem({ onAgregar, itemEditar, onActualizar, onCancelar }) {
         <div className="campo">
           <label>Nombre *</label>
           <input
+            ref={inputRef}
             name="nombre"
             value={form.nombre}
             onChange={handleChange}
@@ -79,7 +71,7 @@ function FormularioItem({ onAgregar, itemEditar, onActualizar, onCancelar }) {
           <label>Categoría</label>
           <select name="categoriaId" value={form.categoriaId} onChange={handleChange}>
             {CATEGORIAS.map(c => (
-              <option key={c.id} value={c.id}>{c.label}</option>
+              <option key={c.id} value={c.id}>{c.nombre}</option>
             ))}
           </select>
         </div>
@@ -100,9 +92,7 @@ function FormularioItem({ onAgregar, itemEditar, onActualizar, onCancelar }) {
             name="puntuacion"
             value={form.puntuacion}
             onChange={handleChange}
-            min="0"
-            max="10"
-            step="0.5"
+            min="0" max="10" step="0.5"
             placeholder="—"
           />
         </div>
